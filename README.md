@@ -23,7 +23,7 @@
 <h2>⚙️ Como Executar Localmente</h2>
 <ol>
   <li>Clone este repositório:
-    <pre><code>git clone https://github.com/seu-usuario/planejador-frota.git</code></pre>
+    <pre><code>git clone https://github.com/SouzaLF/Planejador-Estrategico-de-Frota.git</code></pre>
   </li>
   <li>Instale as dependências:
     <pre><code>pip install -r requirements.txt</code></pre>
