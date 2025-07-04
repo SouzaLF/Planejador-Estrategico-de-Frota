@@ -1,10 +1,11 @@
+import os
 from flask import Flask, render_template, request, jsonify
 import math
 from fpdf import FPDF
 import base64
 from datetime import datetime
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 
 class FleetAnalyzer:
     def __init__(self, vehicles, avg_load, deliveries_per_day, avg_km_route, cost_per_km_variable, revenue_per_delivery, fuel_consumption_km_l=3.5, fuel_emission_factor=2.68, fixed_cost_per_vehicle=100):
@@ -159,4 +160,5 @@ def generate_pdf():
         return jsonify({'success': False, 'error': str(e)})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
