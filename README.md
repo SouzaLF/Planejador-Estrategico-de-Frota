@@ -1,6 +1,9 @@
 <h1 align="center">📦🚚 Planejador Estratégico de Frota</h1>
 <p align="center">
   Ferramenta web para análise e simulação de indicadores logísticos, desenvolvida com <strong>Flask</strong> e <strong>Bootstrap</strong>.
+  
+  [![Assista ao vídeo](https://github.com/user-attachments/assets/483ad50b-d341-48d8-851c-a9098cba6568)](https://github.com/user-attachments/assets/f163f7ef-5f16-4480-b9d8-1964f57d48e7)
+
 </p>
 
 <h2>🧩 Sobre o Projeto</h2>
