@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚛 Planejador Estratégico de Frota | Logística Inteligente</title>
+    <meta name="description" content="Solução completa para gestão e otimização de frotas com análise de dados em tempo real">
+    
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/static/favicon/site.webmanifest">
+    
+    <!-- CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    
+    <style>
+        :root {
+            --primary: #002B5B;
+            --secondary: #FFE600;
+            --accent: #3483FA;
+            --light: #F8F9FA;
+            --dark: #212529;
+            --success: #28A745;
+            --info: #17A2B8;
+            --warning: #FFC107;
+            --danger: #DC3545;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            --shadow-md: 0 4px 6px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.1), 0 5px 10px rgba(0,0,0,0.05);
+            --border-radius: 12px;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* Header Premium */
+        .header-section {
+            background: linear-gradient(135deg, var(--primary) 0%, #001a3d 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .header-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.03' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.15;
+        }
+
+        .header-title {
+            font-weight: 700;
+            font-size: 2.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .header-title::after {
+            content: "";
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: var(--secondary);
+            margin: 1rem 0;
+            border-radius: 2px;
+        }
+
+        .header-subtitle {
+            font-weight: 300;
+            opacity: 0.9;
+            max-width: 600px;
+        }
+
+        /* Form Section */
+        .form-section {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            border: 1px solid rgba(0,0,0,0.05);
+            height: 100%;
+        }
+
+        .form-section:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            border: 1px solid #e0e0e0;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 0.25rem rgba(52, 131, 250, 0.15);
+        }
+
+        /* KPI Cards Premium */
+        .kpi-card {
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            margin-bottom: 1.5rem;
+            background: white;
+            border-left: 4px solid;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kpi-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: currentColor;
+            opacity: 0.2;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .kpi-card .card-body {
+            padding: 1.5rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 1;
+        }
+
+        .kpi-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .kpi-value {
+            font-size: 2rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin: 0.5rem 0;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .kpi-unit {
+            font-size: 0.85rem;
+            color: #6c757d;
+            font-weight: 400;
+        }
+
+        .status-badge {
+            padding: 0.35rem 0.75rem;
+            border-radius: 1rem;
+            font-weight: 600;
+            font-size: 0.75rem;
+            align-self: flex-start;
+            margin-top: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Status Colors */
+        .kpi-card.card-success { color: var(--success); border-color: var(--success); }
+        .kpi-card.card-info { color: var(--info); border-color: var(--info); }
+        .kpi-card.card-warning { color: var(--warning); border-color: var(--warning); }
+        .kpi-card.card-danger { color: var(--danger); border-color: var(--danger); }
+        
+        .bg-success { background-color: var(--success) !important; }
+        .bg-info { background-color: var(--info) !important; }
+        .bg-warning { background-color: var(--warning) !important; }
+        .bg-danger { background-color: var(--danger) !important; }
+
+        /* Charts */
+        .chart-container {
+            position: relative;
+            height: 280px;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary:hover {
+            background-color: #001a3d;
+            border-color: #001a3d;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-outline-primary {
+            color: var(--primary);
+            border-color: var(--primary);
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--primary);
+            color: white;
+            padding: 3rem 0;
+            margin-top: 4rem;
+            position: relative;
+        }
+
+        .footer::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--secondary) 0%, var(--accent) 100%);
+        }
+
+        .footer-title {
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .footer-title::after {
+            content: "";
+            display: block;
+            width: 40px;
+            height: 3px;
+            background: var(--secondary);
+            margin-top: 0.5rem;
+            border-radius: 2px;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        /* Tool Section */
+        .tool-info {
+            background-color: rgba(0, 43, 91, 0.05);
+            border-radius: var(--border-radius);
+            padding: 1.25rem;
+            margin-top: 2rem;
+            border-left: 4px solid var(--secondary);
+        }
+
+        .tool-info h5 {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .header-title {
+                font-size: 2rem;
+            }
+            
+            .kpi-value {
+                font-size: 1.75rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-section {
+                padding: 2rem 0;
+                text-align: center;
+            }
+            
+            .header-title::after {
+                margin: 1rem auto;
+            }
+            
+            .form-section {
+                margin-bottom: 2rem;
+            }
+        }
+
+        /* Dark Mode */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #121212;
+                color: #f8f9fa;
+            }
+            
+            .form-section,
+            .kpi-card {
+                background-color: #1e1e1e;
+                border-color: #333;
+            }
+            
+            .form-control {
+                background-color: #2d2d2d;
+                border-color: #444;
+                color: #f8f9fa;
+            }
+            
+            .form-control:focus {
+                background-color: #2d2d2d;
+                color: #f8f9fa;
+            }
+            
+            .kpi-title {
+                color: #f8f9fa;
+            }
+            
+            .tool-info {
+                background-color: rgba(0, 43, 91, 0.2);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h1 class="header-title">
+                        <i class="bi bi-truck"></i> Planejador Estratégico de Frota
+                    </h1>
+                    <p class="header-subtitle lead">
+                        Solução completa para otimização logística com análise de dados em tempo real e tomada de decisão inteligente
+                    </p>
+                </div>
+                <div class="col-lg-4 text-lg-end">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2909/2909633.png" alt="Logística Inteligente" style="height: 120px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1))">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <div class="row">
+            <!-- Form Column -->
+            <div class="col-lg-5">
+                <div class="form-section">
+                    <h3 class="mb-4 text-center text-lg-start">
+                        <i class="bi bi-sliders2-vertical"></i> Configuração da Operação
+                    </h3>
+                    
+                    <form id="fleet-form">
+                        <div class="mb-3">
+                            <label for="vehicles" class="form-label">
+                                <i class="bi bi-truck me-1"></i> Número de Veículos
+                            </label>
+                            <input type="number" class="form-control" id="vehicles" required min="1" value="10">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="avg_load" class="form-label">
+                                <i class="bi bi-box-seam me-1"></i> Carga Média por Veículo (kg)
+                            </label>
+                            <input type="number" step="0.1" class="form-control" id="avg_load" required min="0.1" value="1000">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="deliveries_per_day" class="form-label">
+                                <i class="bi bi-box-arrow-right me-1"></i> Entregas por Dia
+                            </label>
+                            <input type="number" class="form-control" id="deliveries_per_day" required min="1" value="90">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="avg_km_route" class="form-label">
+                                <i class="bi bi-signpost-2 me-1"></i> Quilometragem por Rota (km)
+                            </label>
+                            <input type="number" step="0.1" class="form-control" id="avg_km_route" required min="1" value="50">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="cost_per_km" class="form-label">
+                                <i class="bi bi-currency-dollar me-1"></i> Custo por km (R$)
+                            </label>
+                            <input type="number" step="0.01" class="form-control" id="cost_per_km" required min="0.1" value="2.50">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="revenue_per_delivery" class="form-label">
+                                <i class="bi bi-cash-stack me-1"></i> Receita por Entrega (R$)
+                            </label>
+                            <input type="number" step="0.01" class="form-control" id="revenue_per_delivery" required min="0.1" value="50.00">
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary w-100 py-3 mt-2">
+                            <i class="bi bi-lightning-charge-fill me-2"></i> Calcular KPIs
+                        </button>
+                    </form>
+                    
+                    <div class="tool-info mt-4">
+                        <h5>
+                            <i class="bi bi-info-circle-fill me-2"></i> Sobre a Ferramenta
+                        </h5>
+                        <p class="small mb-0">
+                            Esta plataforma utiliza algoritmos avançados para análise estratégica de frotas, proporcionando insights valiosos para otimização de custos, capacidade operacional e impacto ambiental.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Results Column -->
+            <div class="col-lg-7">
+                <div id="empty-state" class="text-center py-5">
+                    <img src="https://cdn-icons-png.flaticon.com/512/4076/4076478.png" alt="Empty state" style="height: 120px; opacity: 0.3;">
+                    <h4 class="mt-4 text-muted">Aguardando configuração</h4>
+                    <p class="text-muted">Preencha os parâmetros operacionais para iniciar a análise estratégica</p>
+                    <div class="mt-4">
+                        <button class="btn btn-outline-primary" onclick="document.getElementById('vehicles').focus()">
+                            <i class="bi bi-arrow-down me-2"></i> Comece aqui
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="results-section" style="display: none;">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3 class="mb-0">
+                            <i class="bi bi-speedometer2 me-2"></i> Dashboard de Performance
+                        </h3>
+                        <button id="generate-pdf" class="btn btn-outline-primary">
+                            <i class="bi bi-file-earmark-pdf me-2"></i> Exportar Relatório
+                        </button>
+                    </div>
+                    
+                    <!-- KPI Cards -->
+                    <div class="row g-4" id="kpi-cards"></div>
+                    
+                    <!-- Charts -->
+                    <div class="row mt-4 g-4">
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title d-flex align-items-center">
+                                        <i class="bi bi-pie-chart-fill me-2 text-primary"></i> Eficiência Operacional
+                                    </h5>
+                                    <div class="chart-container">
+                                        <canvas id="utilization-chart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title d-flex align-items-center">
+                                        <i class="bi bi-bar-chart-line-fill me-2 text-primary"></i> Análise Financeira
+                                    </h5>
+                                    <div class="chart-container">
+                                        <canvas id="cost-chart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Recommendations -->
+                    <div class="card border-0 shadow-sm mt-4">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">
+                                <i class="bi bi-lightbulb-fill me-2"></i> Recomendações Estratégicas
+                            </h5>
+                        </div>
+                        <div class="card-body" id="recommendations">
+                            <div class="alert alert-info mb-0">
+                                <i class="bi bi-info-circle-fill me-2"></i> Configure os parâmetros e clique em "Calcular KPIs" para obter recomendações personalizadas.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <h5 class="footer-title">Planejador Estratégico</h5>
+                    <p>
+                        Solução tecnológica para otimização logística e gestão inteligente de frotas, proporcionando redução de custos e aumento de eficiência.
+                    </p>
+                    <div class="mt-4">
+                        <a href="#" class="btn btn-outline-light me-2">
+                            <i class="bi bi-globe"></i>
+                        </a>
+                        <a href="#" class="btn btn-outline-light me-2">
+                            <i class="bi bi-linkedin"></i>
+                        </a>
+                        <a href="#" class="btn btn-outline-light">
+                            <i class="bi bi-github"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <h5 class="footer-title">Recursos</h5>
+                    <ul class="footer-links">
+                        <li>
+                            <a href="#">
+                                <i class="bi bi-chevron-right"></i> Gestão de Frota
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="bi bi-chevron-right"></i> Análise de KPIs
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="bi bi-chevron-right"></i> Simulação de Cenários
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="bi bi-chevron-right"></i> Sustentabilidade
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <h5 class="footer-title">Contato</h5>
+                    <ul class="footer-links">
+                        <li>
+                            <a href="mailto:lfsouza94@hotmail.com">
+                                <i class="bi bi-envelope-fill"></i> lfsouza94@hotmail.com
+                            </a>
+                        </li>
+                        <li>
+                            <a href="tel:+5535991547405">
+                                <i class="bi bi-telephone-fill"></i> (35) 99154-7405
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="bi bi-geo-alt-fill"></i> Brasil
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom text-center">
+                <small class="text-white-50">
+                    © 2023 Planejador Estratégico de Frota. Todos os direitos reservados.
+                </small>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <script>
+        // Variáveis globais para os gráficos
+        let utilizationChart = null;
+        let costChart = null;
+        
+        // Função para formatar valores monetários
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('pt-BR', { 
+                style: 'currency', 
+                currency: 'BRL',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(value);
+        }
+        
+        // Função para renderizar os cards de KPI
+        function renderKPICards(results) {
+            const kpiCards = document.getElementById('kpi-cards');
+            
+            kpiCards.innerHTML = `
+                <!-- Card 1: Utilização da Frota -->
+                <div class="col-md-6 col-lg-4 fade-in" style="animation-delay: 0.1s">
+                    <div class="kpi-card card-${results.efficiency_status.color}">
+                        <div class="card-body">
+                            <h5 class="kpi-title">
+                                <i class="bi bi-truck"></i> Utilização da Frota
+                            </h5>
+                            <div class="d-flex align-items-end">
+                                <h2 class="kpi-value">${results.utilization}</h2>
+                                <span class="kpi-unit ms-1">%</span>
+                            </div>
+                            <span class="status-badge bg-${results.efficiency_status.color}">
+                                <i class="bi ${results.efficiency_status.icon} me-1"></i> ${results.efficiency_status.status}
+                            </span>
+                            <p class="mt-2 mb-0 text-muted small">Capacidade utilizada</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Card 2: Custo por Veículo -->
+                <div class="col-md-6 col-lg-4 fade-in" style="animation-delay: 0.2s">
+                    <div class="kpi-card card-${results.cost_status.color}">
+                        <div class="card-body">
+                            <h5 class="kpi-title">
+                                <i class="bi bi-currency-dollar"></i> Custo por Veículo
+                            </h5>
+                            <h2 class="kpi-value">${formatCurrency(results.cost_per_vehicle)}</h2>
+                            <span class="status-badge bg-${results.cost_status.color}">
+                                <i class="bi ${results.cost_status.icon} me-1"></i> ${results.cost_status.status}
+                            </span>
+                            <p class="mt-2 mb-0 text-muted small">Custo diário médio</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Card 3: Lucro Estimado -->
+                <div class="col-md-6 col-lg-4 fade-in" style="animation-delay: 0.3s">
+                    <div class="kpi-card card-${results.profit_status.color}">
+                        <div class="card-body">
+                            <h5 class="kpi-title">
+                                <i class="bi bi-graph-up-arrow"></i> Lucro Estimado
+                            </h5>
+                            <h2 class="kpi-value">${formatCurrency(results.estimated_profit)}</h2>
+                            <span class="status-badge bg-${results.profit_status.color}">
+                                <i class="bi ${results.profit_status.icon} me-1"></i> ${results.profit_status.status}
+                            </span>
+                            <p class="mt-2 mb-0 text-muted small">Receita menos custos</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Card 4: Veículos Ideais -->
+                <div class="col-md-6 col-lg-4 fade-in" style="animation-delay: 0.4s">
+                    <div class="kpi-card">
+                        <div class="card-body">
+                            <h5 class="kpi-title">
+                                <i class="bi bi-gear"></i> Veículos Ideais
+                            </h5>
+                            <h2 class="kpi-value">${results.optimal_vehicles}</h2>
+                            <p class="mt-3 mb-0 text-muted small">Para demanda atual</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Card 5: Emissões de CO₂ -->
+                <div class="col-md-6 col-lg-4 fade-in" style="animation-delay: 0.5s">
+                    <div class="kpi-card card-${results.emission_status.color}">
+                        <div class="card-body">
+                            <h5 class="kpi-title">
+                                <i class="bi bi-cloud"></i> Emissões de CO₂
+                            </h5>
+                            <div class="d-flex align-items-end">
+                                <h2 class="kpi-value">${results.co2_emissions}</h2>
+                                <span class="kpi-unit ms-1">kg/dia</span>
+                            </div>
+                            <span class="status-badge bg-${results.emission_status.color}">
+                                <i class="bi ${results.emission_status.icon} me-1"></i> ${results.emission_status.status}
+                            </span>
+                            <p class="mt-2 mb-0 text-muted small">Impacto ambiental</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Card 6: Quilometragem Total -->
+                <div class="col-md-6 col-lg-4 fade-in" style="animation-delay: 0.6s">
+                    <div class="kpi-card">
+                        <div class="card-body">
+                            <h5 class="kpi-title">
+                                <i class="bi bi-signpost"></i> Quilometragem Total
+                            </h5>
+                            <div class="d-flex align-items-end">
+                                <h2 class="kpi-value">${results.total_km.toLocaleString('pt-BR')}</h2>
+                                <span class="kpi-unit ms-1">km</span>
+                            </div>
+                            <p class="mt-3 mb-0 text-muted small">Distância total percorrida</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Função para renderizar os gráficos
+        function renderCharts(results) {
+            const ctx1 = document.getElementById('utilization-chart').getContext('2d');
+            const ctx2 = document.getElementById('cost-chart').getContext('2d');
+            
+            // Destruir gráficos existentes
+            if (utilizationChart) utilizationChart.destroy();
+            if (costChart) costChart.destroy();
+            
+            // Gráfico de utilização (Doughnut avançado)
+            utilizationChart = new Chart(ctx1, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Utilizado', 'Ocioso'],
+                    datasets: [{
+                        data: [results.utilization, 100 - results.utilization],
+                        backgroundColor: [
+                            'rgba(40, 167, 69, 0.8)',
+                            'rgba(108, 117, 125, 0.5)'
+                        ],
+                        borderColor: [
+                            'rgba(40, 167, 69, 1)',
+                            'rgba(108, 117, 125, 1)'
+                        ],
+                        borderWidth: 1,
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                usePointStyle: true,
+                                pointStyle: 'circle'
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ` ${context.label}: ${context.raw}%`;
+                                }
+                            }
+                        }
+                    },
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true
+                    }
+                }
+            });
+            
+            // Gráfico financeiro (Bar avançado)
+            costChart = new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: ['Custo Total', 'Receita Total', 'Lucro'],
+                    datasets: [{
+                        label: 'Valores (R$)',
+                        data: [results.estimated_cost, results.total_revenue, results.estimated_profit],
+                        backgroundColor: [
+                            'rgba(220, 53, 69, 0.7)',
+                            'rgba(40, 167, 69, 0.7)',
+                            'rgba(0, 123, 255, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(220, 53, 69, 1)',
+                            'rgba(40, 167, 69, 1)',
+                            'rgba(0, 123, 255, 1)'
+                        ],
+                        borderWidth: 1,
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ` ${formatCurrency(context.raw)}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Função para gerar recomendações
+        function generateRecommendations(results) {
+            const recommendations = document.getElementById('recommendations');
+            let html = '';
+            
+            // Recomendação baseada na utilização
+            if (results.utilization >= 90) {
+                html += `
+                    <div class="alert alert-success d-flex align-items-center">
+                        <i class="bi bi-check-circle-fill fs-4 me-3"></i>
+                        <div>
+                            <strong>Excelente utilização!</strong> Sua frota está operando em capacidade quase máxima (${results.utilization}%).
+                            <div class="small mt-1">Considere monitorar continuamente para manter essa eficiência.</div>
+                        </div>
+                    </div>
+                `;
+            } else if (results.utilization >= 75) {
+                html += `
+                    <div class="alert alert-info d-flex align-items-center">
+                        <i class="bi bi-info-circle-fill fs-4 me-3"></i>
+                        <div>
+                            <strong>Boa utilização!</strong> Sua frota está operando com eficiência (${results.utilization}%).
+                            <div class="small mt-1">Otimizações adicionais podem trazer ganhos significativos.</div>
+                        </div>
+                    </div>
+                `;
+            } else if (results.utilization >= 50) {
+                html += `
+                    <div class="alert alert-warning d-flex align-items-center">
+                        <i class="bi bi-exclamation-triangle-fill fs-4 me-3"></i>
+                        <div>
+                            <strong>Utilização regular (${results.utilization}%).</strong>
+                            <div class="small mt-1">Considere redistribuir rotas ou reduzir a frota para melhorar a eficiência.</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                html += `
+                    <div class="alert alert-danger d-flex align-items-center">
+                        <i class="bi bi-exclamation-octagon-fill fs-4 me-3"></i>
+                        <div>
+                            <strong>Utilização baixa (${results.utilization}%).</strong>
+                            <div class="small mt-1">Sua frota está operando com capacidade ociosa significativa. Ações corretivas são recomendadas.</div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Recomendação baseada no número ideal de veículos
+            if (results.vehicles > results.optimal_vehicles) {
+                const diff = results.vehicles - results.optimal_vehicles;
+                html += `
+                    <div class="alert alert-warning d-flex align-items-center">
+                        <i class="bi bi-arrow-down-circle-fill fs-4 me-3"></i>
+                        <div>
+                            <strong>Redução sugerida:</strong> Para a demanda atual, a quantidade ideal seria ${results.optimal_vehicles} veículos.
+                            <div class="small mt-1">Você está usando ${results.vehicles} - considere reduzir ${diff} veículo${diff > 1 ? 's' : ''} para otimizar custos.</div>
+                        </div>
+                    </div>
+                `;
+            } else if (results.vehicles < results.optimal_vehicles) {
+                const diff = results.optimal_vehicles - results.vehicles;
+                html += `
+                    <div class="alert alert-danger d-flex align-items-center">
+                        <i class="bi bi-arrow-up-circle-fill fs-4 me-3"></i>
+                        <div>
+                            <strong>Expansão necessária:</strong> Para atender toda a demanda, você precisaria de ${results.optimal_vehicles} veículos.
+                            <div class="small mt-1">Você tem ${results.vehicles} - considere adicionar ${diff} veículo${diff > 1 ? 's' : ''} para evitar sobrecarga.</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                html += `
+                    <div class="alert alert-success d-flex align-items-center">
+                        <i class="bi bi-check-circle-fill fs-4 me-3"></i>
+                        <div>
+                            <strong>Frota dimensionada corretamente!</strong>
+                            <div class="small mt-1">A quantidade de veículos está ideal para a demanda atual.</div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Recomendação baseada no lucro
+            if (results.estimated_profit > 0) {
+                html += `
+                    <div class="alert alert-success d-flex align-items-center">
+                        <i class="bi bi-emoji-smile-fill fs-4 me-3"></i>
+                        <div>
+                            <strong>Operação lucrativa!</strong> Seu lucro estimado é de ${formatCurrency(results.estimated_profit)} por dia.
+                            <div class="small mt-1">Continue monitorando para manter essa performance.</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                html += `
+                    <div class="alert alert-danger d-flex align-items-center">
+                        <i class="bi bi-emoji-frown-fill fs-4 me-3"></i>
+                        <div>
+                            <strong>Operação deficitária!</strong> Seu prejuízo estimado é de ${formatCurrency(Math.abs(results.estimated_profit))} por dia.
+                            <div class="small mt-1">Considere rever seus custos ou aumentar a receita por entrega.</div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // Recomendação ambiental
+            html += `
+                <div class="alert ${results.co2_emissions < 200 ? 'alert-info' : 'alert-warning'} d-flex align-items-center">
+                    <i class="bi bi-tree-fill fs-4 me-3"></i>
+                    <div>
+                        <strong>Impacto ambiental:</strong> Sua frota emite aproximadamente ${results.co2_emissions} kg de CO₂ por dia.
+                        <div class="small mt-1">${results.co2_emissions > 300 ? 'Considere otimizar rotas e veículos para reduzir emissões.' : 'Suas emissões estão em níveis aceitáveis.'}</div>
+                    </div>
+                </div>
+            `;
+            
+            recommendations.innerHTML = html;
+        }
+        
+        // Função para gerar PDF
+        async function generatePDF() {
+            const formData = {
+                vehicles: document.getElementById('vehicles').value,
+                deliveries_per_day: document.getElementById('deliveries_per_day').value,
+                kpis: [
+                    { title: 'Utilização da Frota', value: document.querySelector('#kpi-cards .kpi-card:nth-child(1) .kpi-value').textContent + ' %' },
+                    { title: 'Custo por Veículo', value: document.querySelector('#kpi-cards .kpi-card:nth-child(2) .kpi-value').textContent },
+                    { title: 'Lucro Estimado', value: document.querySelector('#kpi-cards .kpi-card:nth-child(3) .kpi-value').textContent },
+                    { title: 'Veículos Ideais', value: document.querySelector('#kpi-cards .kpi-card:nth-child(4) .kpi-value').textContent },
+                    { title: 'Emissões de CO₂', value: document.querySelector('#kpi-cards .kpi-card:nth-child(5) .kpi-value').textContent + ' kg/dia' },
+                    { title: 'Quilometragem Total', value: document.querySelector('#kpi-cards .kpi-card:nth-child(6) .kpi-value').textContent + ' km' }
+                ]
+            };
+            
+            try {
+                const response = await fetch('/generate-pdf', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                
+                const { success, pdf, error } = await response.json();
+                
+                if (success) {
+                    // Criar link para download do PDF
+                    const link = document.createElement('a');
+                    link.href = `data:application/pdf;base64,${pdf}`;
+                    link.download = `relatorio-frota-${new Date().toISOString().slice(0,10)}.pdf`;
+                    link.click();
+                } else {
+                    throw new Error(error);
+                }
+            } catch (error) {
+                alert('Erro ao gerar PDF: ' + error.message);
+                console.error(error);
+            }
+        }
+        
+        // Event Listener para o formulário
+        document.getElementById('fleet-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                vehicles: document.getElementById('vehicles').value,
+                avg_load: document.getElementById('avg_load').value,
+                deliveries_per_day: document.getElementById('deliveries_per_day').value,
+                avg_km_route: document.getElementById('avg_km_route').value,
+                cost_per_km: document.getElementById('cost_per_km').value,
+                revenue_per_delivery: document.getElementById('revenue_per_delivery').value
+            };
+            
+            try {
+                // Mostrar estado de carregamento
+                const submitBtn = e.target.querySelector('button[type="submit"]');
+                const originalBtnText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Calculando...';
+                submitBtn.disabled = true;
+                
+                const response = await fetch('/analyze', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+                
+                const { success, results, error } = await response.json();
+                
+                if (!success) throw new Error(error);
+                
+                // Mostrar seção de resultados
+                document.getElementById('empty-state').style.display = 'none';
+                document.getElementById('results-section').style.display = 'block';
+                
+                // Renderizar componentes
+                renderKPICards(results);
+                renderCharts(results);
+                generateRecommendations(results);
+                
+                // Scroll para resultados
+                document.getElementById('results-section').scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+                
+            } catch (error) {
+                alert('Erro ao calcular: ' + error.message);
+                console.error(error);
+            } finally {
+                // Restaurar botão
+                const submitBtn = e.target.querySelector('button[type="submit"]');
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.disabled = false;
+            }
+        });
+        
+        // Event Listener para o botão de PDF
+        document.getElementById('generate-pdf').addEventListener('click', function(e) {
+            e.preventDefault();
+            generatePDF();
+        });
+
+        // Micro-interações para os cards
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.kpi-card');
+            
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const x = e.clientX - card.getBoundingClientRect().left;
+                    const y = e.clientY - card.getBoundingClientRect().top;
+                    
+                    card.style.setProperty('--mouse-x', `${x}px`);
+                    card.style.setProperty('--mouse-y', `${y}px`);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

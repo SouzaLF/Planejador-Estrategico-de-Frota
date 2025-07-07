@@ -1,0 +1,4 @@
+flask
+fpdf2
+pytest  # opcional para testes
+python-dotenv  # para gerenciamento de variáveis de ambiente
