@@ -2,3 +2,4 @@ flask==2.3.2
 fpdf2==2.7.4
 python-dotenv==1.0.0
 pytest==7.4.0  # opcional para testes
+gunicorn
