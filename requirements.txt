@@ -1,4 +1,4 @@
-flask
-fpdf2
-pytest  # opcional para testes
-python-dotenv  # para gerenciamento de variáveis de ambiente
+flask==2.3.2
+fpdf2==2.7.4
+python-dotenv==1.0.0
+pytest==7.4.0  # opcional para testes
